@@ -65,7 +65,7 @@ My first step was to use a convolution neural network model similar to LeNet, wh
 I think the model didn't need that much correction because of two things. First, the data provided by Udacity was really good, which also included correction movements. Second, with the advantage of a large ram on my computer, I didn't use generator and shuffled the data after the augmentation. Thanks to that, in every batch the augmented data was not derived from rest of the batch. 
 
 
-####2. Final Model Architecture
+#### 2. Final Model Architecture
 
 The final model architecture consisted of a convolution neural network with the following layers and layer sizes:
 
@@ -109,8 +109,10 @@ In my tests, I've seen that increasing epochs causes to improvement in training 
 You can see the training and validation accuracy below for each epoch:
 ![alt text][image2]
 
-#### 4. Conclusion & Improvement suggestions
+### Conclusion & Improvement suggestions
 
-As you can see on run1.mp4 and run2.mp4 the model can run pretty good around the track. On run1, the vehicle speed is adjusted as 8 in drive.py. On run2, the vehicle speed is adjusted as 20. The model can't drive faster than this, because it starts to oscillate on the road. This problem can be solved by decreasing the correction values on the augmented data generation. 
+As you can see on run1.mp4 and run2.mp4 the model can run pretty good around the track. On run1, the vehicle speed is adjusted as 8 in drive.py. On run2, the vehicle speed is adjusted as 20 (drive.py: line 47). The model can't drive faster than this, because it starts to oscillate on the road. This problem can be solved by decreasing the correction values on the augmented data generation.
+
+The vehicle oscillates at the beginning, because the velocity overshoots and then settles. Anti- windup algorithms could be generated, or for a more basic solution, PI parameters can be modified. This behaviour only affects the vehicle for a short time at the beginning only. 
 
 To overcome of overfitting, additional dropout layers can be implemented, and more data can be obtained from different tracks to generalize the model. Generating fake shadows, brightness and gama modifications, applying noise to the collected data would provide more generalized data.
