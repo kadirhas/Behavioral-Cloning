@@ -1,0 +1,33 @@
+Dataset-wise, for track 1, I drove on multiple laps in both directions and collected a sizeable amount of images. But I could barely get a working model with this.
+
+
+
+Then I downloaded the Udacity dataset of track 1 and my results improved but the car did not always stay within bounds.
+
+
+
+So I decided to collect data by driving _erratically_ around track 1, going to the edge and recovering by turning somewhat sharply (I call it virtual drink driving :joy: ).
+
+
+
+I then created a combined dataset made of udacity data and my erractic/recovery data for training, leaving aside my original dataset for validation.
+
+Eddie Forson 8:39 PM
+
+This gives much more variability for steering wheel angles, but it’s not enough to clear track 1. You need apply augmentations to artificially increase the dataset and generate more steering angles.
+
+
+
+First recommended augmentation is flipping images horizontally  so that the model learns to see the car on either side of the driveable portion of the road (http://www.technolabsz.com/2012/08/how-to-flip-image-in-opencv.html) - you obviously have to multiply the associated angle by -1.
+
+
+
+The second critical augmentation to pass track 1 is shifting the image right/left and adding an offset to the steering angle for every pixel shifted (you can try values in the range [±0.0025, ±0.004] per pixel shifted).
+
+Eddie Forson 8:41 PM
+
+When reading images, make sure to add a calibrating steering angle offset to left and right images. you could try augmenting 50% or more of all images in the batch
+
+Eddie Forson 8:43 PM
+
+For my choice of architecture, I tried a variant of VGG without transfer learning and was not getting good results so I used the NVIDIA model, which ended up working very well, using ReLU as the activation function. You could try other activations like ELU as well. I also added a cheeky BatchNormalisation operation after each layer and that showed better results too. 
